@@ -28,6 +28,8 @@ var (
 	STAR = `★`
 
 	size, width int
+
+	colStar string
 )
 
 func main() {
@@ -42,13 +44,15 @@ func main() {
 		Tree = balls(Tree)
 		Tree = colored(Tree)
 
+		t := strings.Join(Tree, "\n")
+
 		cmd := exec.Command("clear")
 		cmd.Stdout = os.Stdout
 		cmd.Run()
 
-		fmt.Println(strings.Join(Tree, "\n"))
+		fmt.Println(t)
 
-		time.Sleep(500 * time.Millisecond)
+		time.Sleep(1 * time.Second)
 	}
 }
 
@@ -57,7 +61,7 @@ func tree(height, screen_width int) []string {
 	if height%2 != 0 {
 		height += 1
 	}
-	top := []string{Title, "\033[0m", ` ★ `, `★ ★ ★`, ` ★ ★ `, "/_\\", "/_\\_\\"}
+	top := []string{Title, ` ★ `, `★ ★ ★`, ` ★ ★ `, "/_\\", "/_\\_\\"}
 	lines := []string{}
 	trunk := "[___]"
 	begin := "/"
@@ -101,6 +105,11 @@ func random_hangs_balls(str string) string {
 
 // colored is paints balls
 func colored(str []string) []string {
+	if colStar == "\033[31m" {
+		colStar = "\033[33m"
+	} else {
+		colStar = "\033[31m"
+	}
 	for i, s := range str {
 		var buffer bytes.Buffer
 		for _, r := range s {
@@ -108,6 +117,12 @@ func colored(str []string) []string {
 				genColor := rand.New(rand.NewSource(time.Now().UnixNano()))
 				buffer.WriteString(COLOR[genColor.Intn(len(COLOR))])
 				buffer.WriteRune(BALL)
+				buffer.WriteString("\033[0m")
+				continue
+			}
+			if r == '★' {
+				buffer.WriteString(colStar)
+				buffer.WriteRune(r)
 				buffer.WriteString("\033[0m")
 				continue
 			}
