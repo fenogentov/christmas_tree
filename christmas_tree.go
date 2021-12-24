@@ -117,13 +117,13 @@ func colored(str []string) []string {
 				genColor := rand.New(rand.NewSource(time.Now().UnixNano()))
 				buffer.WriteString(COLOR[genColor.Intn(len(COLOR))])
 				buffer.WriteRune(BALL)
-				buffer.WriteString("\033[0m")
+				buffer.WriteString("\033[32m")
 				continue
 			}
 			if r == '★' {
 				buffer.WriteString(colStar)
 				buffer.WriteRune(r)
-				buffer.WriteString("\033[0m")
+				buffer.WriteString("\033[32m")
 				continue
 			}
 			buffer.WriteRune(r)
