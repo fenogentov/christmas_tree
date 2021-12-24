@@ -42,7 +42,9 @@ func main() {
 		Tree = balls(Tree)
 		Tree = colored(Tree)
 
-		fmt.Print("\033[2J\033[H")
+		cmd := exec.Command("clear")
+		cmd.Stdout = os.Stdout
+		cmd.Run()
 
 		fmt.Println(strings.Join(Tree, "\n"))
 
