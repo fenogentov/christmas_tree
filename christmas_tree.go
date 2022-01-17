@@ -27,8 +27,7 @@ var (
 	}
 
 	size, width int
-
-	colStar string
+	colStar     string
 )
 
 func main() {
