@@ -14,9 +14,9 @@ import (
 )
 
 var (
-	Title = "\033[1;34m С НОВЫМ ГОДОМ !"
-	BALL  = '⏺'
-	COLOR = []string{
+	title = "\033[1;34m С НОВЫМ ГОДОМ !"
+	ball  = '⏺'
+	color = []string{
 		"\033[94m",
 		"\033[93m",
 		"\033[96m",
@@ -25,7 +25,6 @@ var (
 		"\033[97m",
 		"\033[91m",
 	}
-	STAR = `★`
 
 	size, width int
 
@@ -35,7 +34,7 @@ var (
 func main() {
 	cmd := exec.Command("clear")
 	cmd.Stdout = os.Stdout
-	cmd.Run()
+	_ = cmd.Run()
 
 	for {
 		width, size, _ = term.GetSize(0)
@@ -48,7 +47,7 @@ func main() {
 
 		cmd := exec.Command("clear")
 		cmd.Stdout = os.Stdout
-		cmd.Run()
+		_ = cmd.Run()
 
 		fmt.Println(t)
 
@@ -57,11 +56,11 @@ func main() {
 }
 
 // tree is creates a Christmas tree
-func tree(height, screen_width int) []string {
+func tree(height, screenWidth int) []string {
 	if height%2 != 0 {
-		height += 1
+		height++
 	}
-	top := []string{Title, ` ★ `, `★ ★ ★`, ` ★ ★ `, "/_\\", "/_\\_\\"}
+	top := []string{title, ` ★ `, `★ ★ ★`, ` ★ ★ `, "/_\\", "/_\\_\\"}
 	lines := []string{}
 	trunk := "[___]"
 	begin := "/"
@@ -80,24 +79,24 @@ func tree(height, screen_width int) []string {
 
 	}
 	lines = append(lines, trunk)
-	lineCenter(lines, screen_width)
+	lineCenter(lines, screenWidth)
 	return lines
 }
 
 // balls is hangs balls
 func balls(tree []string) []string {
 	for idx := 3; idx < len(tree)-1; idx++ {
-		tree[idx] = random_hangs_balls(tree[idx])
+		tree[idx] = randomHangsBalls(tree[idx])
 	}
 	return tree
 }
-func random_hangs_balls(str string) string {
+func randomHangsBalls(str string) string {
 	r := []rune(str)
 	for i := 0; i < len(r)/6; i++ {
 		generator := rand.New(rand.NewSource(time.Now().UnixNano()))
 		idx := generator.Intn(len(r))
 		if r[idx] != ' ' && r[idx] == '_' {
-			r[idx] = BALL
+			r[idx] = ball
 		}
 	}
 	return string(r)
@@ -113,10 +112,10 @@ func colored(str []string) []string {
 	for i, s := range str {
 		var buffer bytes.Buffer
 		for _, r := range s {
-			if r == BALL {
+			if r == ball {
 				genColor := rand.New(rand.NewSource(time.Now().UnixNano()))
-				buffer.WriteString(COLOR[genColor.Intn(len(COLOR))])
-				buffer.WriteRune(BALL)
+				buffer.WriteString(color[genColor.Intn(len(color))])
+				buffer.WriteRune(ball)
 				buffer.WriteString("\033[32m")
 				continue
 			}
